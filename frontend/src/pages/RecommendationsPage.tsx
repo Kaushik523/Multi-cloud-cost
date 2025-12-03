@@ -1,4 +1,4 @@
-import { type CSSProperties, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { API_BASE_URL } from '../config/api';
 
 interface Recommendation {
@@ -11,28 +11,6 @@ interface Recommendation {
 
 const UNCONFIGURED_API_ERROR = 'API base URL is not configured.';
 const DEFAULT_ERROR_MESSAGE = 'Unable to load recommendations.';
-
-const tableStyle: CSSProperties = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  marginTop: '1.5rem',
-};
-
-const thStyle: CSSProperties = {
-  textAlign: 'left',
-  padding: '0.75rem 1rem',
-  borderBottom: '2px solid #e1e4e8',
-  fontSize: '0.9rem',
-  textTransform: 'uppercase',
-  letterSpacing: '0.05em',
-  color: '#6a737d',
-};
-
-const tdStyle: CSSProperties = {
-  padding: '0.75rem 1rem',
-  borderBottom: '1px solid #e1e4e8',
-  verticalAlign: 'top',
-};
 
 const RecommendationsPage = () => {
   const [data, setData] = useState<Recommendation[]>([]);
@@ -82,19 +60,19 @@ const RecommendationsPage = () => {
   const hasRecommendations = data.length > 0;
 
   return (
-    <section className="recommendations-page">
+    <section className="page-section recommendations-page">
       <header>
         <h2>Recommendations</h2>
-        <p>Actionable workload moves that lower cost while keeping CPU usage comparable.</p>
+        <p>Actionable workload moves that lower spend while keeping CPU usage steady.</p>
       </header>
 
-      {loading && <p>Loading recommendations…</p>}
+      {loading && <p className="inline-status">Loading recommendation results…</p>}
 
       {error && (
-        <div role="alert" style={{ color: '#d93025', marginBlock: '1rem' }}>
-          <p>Failed to load recommendations: {error}</p>
+        <div role="alert" className="feedback">
+          <p>We couldn't load the recommendations: {error}</p>
           <button type="button" onClick={refetch}>
-            Try again
+            Retry
           </button>
         </div>
       )}
@@ -102,44 +80,36 @@ const RecommendationsPage = () => {
       {!loading && !error && (
         <>
           {hasRecommendations ? (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={tableStyle}>
+            <div className="surface-card table-wrapper">
+              <table className="data-table">
                 <thead>
                   <tr>
-                    <th style={thStyle}>Workload ID</th>
-                    <th style={thStyle}>Current Provider</th>
-                    <th style={thStyle}>Recommended Provider</th>
-                    <th style={thStyle}>Estimated Savings (%)</th>
-                    <th style={thStyle}>Explanation</th>
+                    <th>Workload ID</th>
+                    <th>Current provider</th>
+                    <th>Recommended provider</th>
+                    <th>Estimated savings (%)</th>
+                    <th>Explanation</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.map((item) => (
                     <tr key={item.workload_id}>
-                      <td style={tdStyle}>{item.workload_id}</td>
-                      <td style={tdStyle}>{item.current_provider}</td>
-                      <td style={tdStyle}>{item.recommended_provider}</td>
-                      <td style={tdStyle}>{item.estimated_savings_percent.toFixed(1)}%</td>
-                      <td style={tdStyle}>{item.explanation}</td>
+                      <td>{item.workload_id}</td>
+                      <td>{item.current_provider}</td>
+                      <td>{item.recommended_provider}</td>
+                      <td>{item.estimated_savings_percent.toFixed(1)}%</td>
+                      <td>{item.explanation}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           ) : (
-            <div
-              style={{
-                border: '1px solid #e1e4e8',
-                borderRadius: '0.5rem',
-                padding: '1.5rem',
-                marginTop: '1.5rem',
-                background: '#f7f9fc',
-              }}
-            >
-              <h3 style={{ marginTop: 0 }}>No recommendations yet</h3>
-              <p style={{ marginBottom: '0.5rem' }}>
-                All monitored workloads look optimized based on the latest data. Check back later or
-                adjust your time window in the API to surface new opportunities.
+            <div className="surface-card empty-state">
+              <h3>No recommendations yet</h3>
+              <p>
+                All monitored workloads look optimized right now. Check back later or adjust your API
+                filters to surface new opportunities.
               </p>
               <button type="button" onClick={refetch}>
                 Refresh recommendations
