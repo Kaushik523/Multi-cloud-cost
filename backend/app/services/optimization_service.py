@@ -8,8 +8,8 @@ from typing import Any
 
 from sqlalchemy import func
 
-from app.db import SessionLocal
-from app.models.db_models import CloudAccount, CostRecordDB, PerformanceRecordDB
+from backend.app.db import SessionLocal
+from backend.app.models.db_models import CloudAccount, CostRecordDB, PerformanceRecordDB
 from backend.app.models.schemas import CloudProviderEnum
 
 

@@ -20,8 +20,8 @@ for candidate in (PROJECT_ROOT, BACKEND_DIR):
 
 from backend.app.services.normalization_service import fetch_and_normalize_all_providers
 from backend.app.models.schemas import CostRecord, PerformanceRecord
-from app.db import SessionLocal
-from app.models.db_models import (
+from backend.app.db import SessionLocal
+from backend.app.models.db_models import (
     CloudAccount,
     CostRecordDB,
     PerformanceRecordDB,
