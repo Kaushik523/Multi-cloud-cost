@@ -5,12 +5,12 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Callable
 
-from backend.app.models.schemas import (
+from app.models.schemas import (
     CloudProviderEnum,
     CostRecord,
     PerformanceRecord,
 )
-from backend.app.providers import aws_client, azure_client, gcp_client
+from app.providers import aws_client, azure_client, gcp_client
 
 RawRecord = dict[str, Any]
 
