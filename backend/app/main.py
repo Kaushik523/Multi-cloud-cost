@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.models.schemas import (
+from backend.app.models.schemas import (
     ComparisonSummaryResponse,
     OverviewSummaryResponse,
     RecommendationResponse,
 )
-from app.services.optimization_service import (
+from backend.app.services.optimization_service import (
     get_comparison_summary,
     get_optimization_suggestions,
     get_overview_summary,
