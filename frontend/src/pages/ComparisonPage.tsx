@@ -1,4 +1,4 @@
-import { type CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { API_BASE_URL } from '../config/api';
 
 interface ComparisonSummary {
@@ -25,27 +25,6 @@ const cpuFormatter = new Intl.NumberFormat('en-US', {
 const integerFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
 });
-
-const tableStyle: CSSProperties = {
-  width: '100%',
-  borderCollapse: 'collapse',
-  marginTop: '1.5rem',
-};
-
-const thStyle: CSSProperties = {
-  textAlign: 'left',
-  padding: '0.75rem 1rem',
-  borderBottom: '2px solid #e1e4e8',
-  fontSize: '0.9rem',
-  textTransform: 'uppercase',
-  letterSpacing: '0.05em',
-  color: '#6a737d',
-};
-
-const tdStyle: CSSProperties = {
-  padding: '0.75rem 1rem',
-  borderBottom: '1px solid #e1e4e8',
-};
 
 const ComparisonPage = () => {
   const [data, setData] = useState<ComparisonSummary[]>([]);
@@ -101,22 +80,19 @@ const ComparisonPage = () => {
   const hasRows = sortedRows.length > 0;
 
   return (
-    <section className="comparison-page">
+    <section className="page-section comparison-page">
       <header>
-        <h2>Provider Comparison</h2>
-        <p>
-          Track how each cloud provider is performing across spend, CPU utilization, and workload
-          counts.
-        </p>
+        <h2>Provider comparison</h2>
+        <p>Monitor spend, CPU efficiency, and workload volume by provider in one view.</p>
       </header>
 
-      {loading && <p>Loading provider comparison…</p>}
+      {loading && <p className="inline-status">Loading provider comparison data…</p>}
 
       {error && (
-        <div role="alert" style={{ color: '#d93025', marginBlock: '1rem' }}>
-          <p>Failed to load comparison data: {error}</p>
+        <div role="alert" className="feedback">
+          <p>We couldn't load the comparison data: {error}</p>
           <button type="button" onClick={refetch}>
-            Try again
+            Retry
           </button>
         </div>
       )}
@@ -124,36 +100,43 @@ const ComparisonPage = () => {
       {!loading && !error && (
         <>
           {hasRows ? (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={tableStyle}>
+            <div className="surface-card table-wrapper">
+              <table className="data-table">
                 <thead>
                   <tr>
-                    <th style={thStyle}>Provider</th>
-                    <th style={thStyle}>Total Cost</th>
-                    <th style={thStyle}>Avg CPU Utilization</th>
-                    <th style={thStyle}>Number of Workloads</th>
+                    <th>Provider</th>
+                    <th>Total cost</th>
+                    <th>Avg CPU utilization</th>
+                    <th>Workloads tracked</th>
                   </tr>
                 </thead>
                 <tbody>
                   {sortedRows.map((row) => (
                     <tr key={row.provider}>
-                      <td style={tdStyle}>{row.provider}</td>
-                      <td style={tdStyle}>{currencyFormatter.format(row.total_cost)}</td>
-                      <td style={tdStyle}>
+                      <td>{row.provider}</td>
+                      <td>{currencyFormatter.format(row.total_cost)}</td>
+                      <td>
                         {row.avg_cpu_utilization !== null
                           ? `${cpuFormatter.format(row.avg_cpu_utilization)}%`
                           : '—'}
                       </td>
-                      <td style={tdStyle}>{integerFormatter.format(row.workload_count)}</td>
+                      <td>{integerFormatter.format(row.workload_count)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           ) : (
-            <p style={{ marginTop: '1rem' }}>
-              No provider metrics are available for the selected time window.
-            </p>
+            <div className="surface-card empty-state">
+              <h3>No provider metrics yet</h3>
+              <p>
+                We didn't receive any comparison data for this time window. Refresh the feed or adjust
+                the API filters.
+              </p>
+              <button type="button" onClick={refetch}>
+                Refresh data
+              </button>
+            </div>
           )}
         </>
       )}
