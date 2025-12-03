@@ -4,10 +4,10 @@ from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from backend.app.db import Base
-from backend.app.models.db_models import CloudAccount, CostRecordDB, PerformanceRecordDB
-from backend.app.models.schemas import CloudProviderEnum
-from backend.app.services import optimization_service
+from app.db import Base
+from app.models.db_models import CloudAccount, CostRecordDB, PerformanceRecordDB
+from app.models.schemas import CloudProviderEnum
+from app.services import optimization_service
 
 
 def test_get_optimization_suggestions_returns_cheaper_provider(tmp_path, monkeypatch):

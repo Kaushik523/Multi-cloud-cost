@@ -18,10 +18,10 @@ for candidate in (PROJECT_ROOT, BACKEND_DIR):
     if path_str not in sys.path:
         sys.path.insert(0, path_str)
 
-from backend.app.services.normalization_service import fetch_and_normalize_all_providers
-from backend.app.models.schemas import CostRecord, PerformanceRecord
-from backend.app.db import SessionLocal
-from backend.app.models.db_models import (
+from app.services.normalization_service import fetch_and_normalize_all_providers
+from app.models.schemas import CostRecord, PerformanceRecord
+from app.db import SessionLocal
+from app.models.db_models import (
     CloudAccount,
     CostRecordDB,
     PerformanceRecordDB,
