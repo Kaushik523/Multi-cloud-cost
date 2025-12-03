@@ -72,3 +72,38 @@ class PerformanceRecord(BaseModel):
             }
         }
     )
+
+
+class OverviewTopService(BaseModel):
+    """Service entry in the overview summary."""
+
+    provider: CloudProviderEnum
+    service: str
+    total_cost: float
+
+
+class OverviewSummaryResponse(BaseModel):
+    """High-level dashboard summary."""
+
+    time_window_days: int
+    total_cost_per_provider: dict[CloudProviderEnum, float]
+    top_services: list[OverviewTopService]
+
+
+class ComparisonSummaryResponse(BaseModel):
+    """Provider-level metrics for comparisons."""
+
+    provider: CloudProviderEnum
+    total_cost: float
+    avg_cpu_utilization: float | None
+    workload_count: int
+
+
+class RecommendationResponse(BaseModel):
+    """Optimization recommendation for a workload."""
+
+    workload_id: str
+    current_provider: CloudProviderEnum
+    recommended_provider: CloudProviderEnum
+    estimated_savings_percent: float
+    explanation: str
