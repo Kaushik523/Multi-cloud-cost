@@ -11,7 +11,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 
-from backend.app.db import Base, engine
+from app.db import Base, engine
 
 
 class CloudAccount(Base):
