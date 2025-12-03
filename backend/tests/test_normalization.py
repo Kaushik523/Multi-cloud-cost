@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from backend.app.models.schemas import CloudProviderEnum, CostRecord, PerformanceRecord
-from backend.app.providers import aws_client, azure_client, gcp_client
-from backend.app.services.normalization_service import (
+from app.models.schemas import CloudProviderEnum, CostRecord, PerformanceRecord
+from app.providers import aws_client, azure_client, gcp_client
+from app.services.normalization_service import (
     normalize_cost_records,
     normalize_performance_records,
 )
